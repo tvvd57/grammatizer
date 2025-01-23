@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Noun Accorder</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+            *:not(i)
+            {
+                font-family: "Noto Sans", serif;
+                font-size: 2vmin;
+                text-align: center;
+            }    
+        </style>
+    </head>
+    <body>
+        <span style="font-weight: bold; font-size: 4vmin;">Noun Accorder</span>
+        <div id="search-div" style="visibility:hidden;">
+            <br><span>Enter a noun to accord</span>
+            <br><input type="text" style="margin-top: 1vmin; border-radius: 1vmin; border:0; background-color: rgb(223, 233, 238);" id="adjectiveinput"/>
+            <br><button style="border-radius: 1vmin; border: 0; margin-top: 1vmin; background-color: rgb(216, 226, 255);" id="adjectiveinputbutton">Confirm</button>
+            <br><br><span style="font-style: italic; color: rgb(255, 124, 124); visibility: hidden;" id="errormessageadjectivenoter">Error</span>
+
+            <br><br><button style="border-radius: 1vmin; border: 0; margin-top: 1vmin; background-color: rgb(216, 226, 255);" id="backbutton">Back</button>
+        </div>
+        <div style="display: block; visibility: hidden;" id="adjectiveconjugation">
+            <br><button style="border-radius: 1vmin; border: 0; margin-top: 1vmin; background-color: rgb(216, 226, 255);" id="backbutton">Back</button><br><br>
+
+            <span>sagelier: </span><span id="singular" style="font-style: italic;">nil</span><br>
+            <span>ploral: </span><span id="plural" style="font-style: italic;">nil</span><br>
+            <br>
+            <span>genetivf sagelier: </span><span id="gensingular" style="font-style: italic;">nil</span><br>
+            <span>genetivf ploral: </span><span id="genplural" style="font-style: italic;">nil</span><br>
+        </div>
+
+        <script>
+            //variables
+            const currentUrl = window.location.href; // get the client's website url
+            var search_div = document.getElementById('search-div');
+            const verbInputButton = document.getElementById('adjectiveinputbutton');
+            const verbInputGui = document.getElementById('adjectiveinput');
+            const verbInputError = document.getElementById('errormessageverbnoter');
+            const verbConjugationUI = document.getElementById('adjectiveconjugation');
+            const vowels = [
+                "a", "ä", "â",
+                "e", "ë", "ê", "é",
+                "ǝ",
+                "i", "ï", "î",
+                "o", "ö", "ô",
+                "y", "ÿ", "ŷ",
+                "u", "ü", "û"
+            ];
+
+            //on load
+            if (currentUrl.includes('?v=')) { // when player already did a verb input
+                // get the verb
+                let value = window.location.search.substr(3, window.location.search.length).toLowerCase();
+
+                // unformat special characters
+                //lowercase normal
+                if (value.includes("%c7%9d")) {
+                    value = value.split("%c7%9d")[0] + "ǝ" + value.split("%c7%9d")[1]
+                }
+                if (value.includes("%ca%92")) {
+                    value = value.split("%ca%92")[0] + "ʒ" + value.split("%ca%92")[1]
+                }
+                if (value.includes("%c5%a1")) {
+                    value = value.split("%c5%a1")[0] + "š" + value.split("%c5%a1")[1]
+                }
+                if (value.includes("%c4%8d")) {
+                    value = value.split("%c4%8d")[0] + "č" + value.split("%c4%8d")[1]
+                }
+                if (value.includes("%c3%be")) {
+                    value = value.split("%c3%be")[0] + "þ" + value.split("%c3%be")[1]
+                }
+                //lowercase accents
+                if (value.includes("%c3%a4")) {
+                    value = value.split("%c3%a4")[0] + "ä" + value.split("%c3%a4")[1]
+                }
+                if (value.includes("%c3%a2")) {
+                    value = value.split("%c3%a2")[0] + "â" + value.split("%c3%a2")[1]
+                }
+                if (value.includes("%c3%ab")) {
+                    value = value.split("%c3%ab")[0] + "ë" + value.split("%c3%ab")[1]
+                }
+                if (value.includes("%c3%aa")) {
+                    value = value.split("%c3%aa")[0] + "ê" + value.split("%c3%aa")[1]
+                }
+                if (value.includes("%c3%a9")) {
+                    value = value.split("%c3%a9")[0] + "é" + value.split("%c3%a9")[1]
+                }
+                if (value.includes("%c3%af")) {
+                    value = value.split("%c3%af")[0] + "ï" + value.split("%c3%af")[1]
+                }
+                if (value.includes("%c3%ae")) {
+                    value = value.split("%c3%ae")[0] + "î" + value.split("%c3%ae")[1]
+                }
+                if (value.includes("%c3%b6")) {
+                    value = value.split("%c3%b6")[0] + "ö" + value.split("%c3%b6")[1]
+                }
+                if (value.includes("%c3%b4")) {
+                    value = value.split("%c3%b4")[0] + "ô" + value.split("%c3%b4")[1]
+                }
+                if (value.includes("%c3%bf")) {
+                    value = value.split("%c3%bf")[0] + "ÿ" + value.split("%c3%bf")[1]
+                }
+                if (value.includes("%c5%b7")) {
+                    value = value.split("%c5%b7")[0] + "ŷ" + value.split("%c5%b7")[1]
+                }
+                if (value.includes("%c3%bc")) {
+                    value = value.split("%c3%bc")[0] + "ü" + value.split("%c3%bc")[1]
+                }
+                if (value.includes("%c3%bb")) {
+                    value = value.split("%c3%bb")[0] + "û" + value.split("%c3%bb")[1]
+                }
+                //uppercase normal
+                if (value.includes("%c6%8e")) { //
+                    value = value.split("%c6%8e")[0] + "ǝ" + value.split("%c6%8e")[1]
+                }
+                if (value.includes("%c6%b7")) { //
+                    value = value.split("%c6%b7")[0] + "ʒ" + value.split("%c6%b7")[1]
+                }
+                if (value.includes("%c5%a0")) { //
+                    value = value.split("%c5%a0")[0] + "š" + value.split("%c5%a0")[1]
+                }
+                if (value.includes("%c4%8c")) { //
+                    value = value.split("%c4%8c")[0] + "č" + value.split("%c4%8c")[1]
+                }
+                if (value.includes("%c3%9e")) { //
+                    value = value.split("%c3%9e")[0] + "þ" + value.split("%c3%9e")[1]
+                }
+                //lowercase accents
+                if (value.includes("%c3%84")) { //
+                    value = value.split("%c3%84")[0] + "ä" + value.split("%c3%84")[1]
+                }
+                if (value.includes("%c3%82")) { //
+                    value = value.split("%c3%82")[0] + "â" + value.split("%c3%82")[1]
+                }
+                if (value.includes("%c3%8b")) { //
+                    value = value.split("%c3%8b")[0] + "ë" + value.split("%c3%8b")[1]
+                }
+                if (value.includes("%c3%8a")) { //
+                    value = value.split("%c3%8a")[0] + "ê" + value.split("%c3%8a")[1]
+                }
+                if (value.includes("%c3%89")) { //
+                    value = value.split("%c3%89")[0] + "é" + value.split("%c3%89")[1]
+                }
+                if (value.includes("%c3%8f")) { //
+                    value = value.split("%c3%8f")[0] + "ï" + value.split("%c3%8f")[1]
+                }
+                if (value.includes("%c3%8e")) { //
+                    value = value.split("%c3%8e")[0] + "î" + value.split("%c3%8e")[1]
+                }
+                if (value.includes("%c3%96")) { //
+                    value = value.split("%c3%96")[0] + "ö" + value.split("%c3%96")[1]
+                }
+                if (value.includes("%c3%94")) { //
+                    value = value.split("%c3%94")[0] + "ô" + value.split("%c3%94")[1]
+                }
+                if (value.includes("%c5%b8")) { //
+                    value = value.split("%c5%b8")[0] + "ÿ" + value.split("%c5%b8")[1]
+                }
+                if (value.includes("%c5%b6")) { //
+                    value = value.split("%c5%b6")[0] + "ŷ" + value.split("%c5%b6")[1]
+                }
+                if (value.includes("%c3%9c")) { //
+                    value = value.split("%c3%9c")[0] + "ü" + value.split("%c3%9c")[1]
+                }
+                if (value.includes("%c3%9b")) { //
+                    value = value.split("%c3%9b")[0] + "û" + value.split("%c3%9b")[1]
+                }
+
+                //remove div
+                search_div.remove();
+
+                //back button
+                document.getElementById('backbutton').addEventListener('click', function() {
+                    window.location.href = currentUrl.split('?v=')[0]; // loads the URL and reload the page - Oškij â Ghurklas
+                });
+
+                var isvowel = false
+                    vowels.forEach(vow => {
+                        if (value.substring(value.length - 1, value.length) == vow) {
+                            isvowel = true
+                        }
+                });
+
+                if (value.substring(value.length - 1, value.length) == "ǝ" || value.substring(value.length - 2, value.length) == "eu" || value.substring(value.length - 2, value.length) == "ëu") { 
+                    document.getElementById("singular").textContent = value;
+                    document.getElementById("plural").textContent = value + "n";
+                    document.getElementById("gensingular").textContent = value + "je"; 
+                    document.getElementById("genplural").textContent = value + "ne";
+                } else { if (isvowel == true) {
+                    document.getElementById("singular").textContent = value;
+                    document.getElementById("plural").textContent = value + "s";
+                    document.getElementById("gensingular").textContent = value + "je"; 
+                    document.getElementById("genplural").textContent = value + "se";
+                } else { if (value.substring(value.length - 2, value.length) == "ǝn" || value.substring(value.length - 3, value.length) == "eun" || value.substring(value.length - 3, value.length) == "ëun") {
+                    document.getElementById("singular").textContent = value;
+                    document.getElementById("plural").textContent = value;
+                    document.getElementById("gensingular").textContent = value + "e"; 
+                    document.getElementById("genplural").textContent = value + "e";
+                } else {
+                    document.getElementById("singular").textContent = value;
+                    document.getElementById("plural").textContent = value + "es";
+                    document.getElementById("gensingular").textContent = value + "e"; 
+                    document.getElementById("genplural").textContent = value + "ese";
+                }}};
+                
+                // show the conjugation UI
+                verbConjugationUI.style.visibility = "visible";
+            } else { // player needs to input a verb
+                search_div.style.visibility = 'visible'; // show division
+                verbConjugationUI.remove();
+
+                document.getElementById('backbutton').addEventListener('click', function() { //return button
+                        window.location.href = "/"; // loads the URL and reload the page - Oškij â Ghurklas
+                });
+                
+                verbInputButton.addEventListener('click', function() { // when button is clicked
+                    const verbInput = verbInputGui.value.trim() // trim() enlève les espaces inutiles
+                    function newWebUrl() {
+                        const newUrl = new URL(currentUrl); // nouvelle IRL
+                        newUrl.searchParams.set('v', verbInput) // ajoute ?v=textdutruc à la fin
+
+                        window.location.href = newUrl.toString(); // loads the URL and reload the page - Oškij â Ghurklas
+                    };
+                    
+                    if (verbInput) {
+                        newWebUrl();
+                    } else {
+                        verbInputError.textContent = "Please input a verb.";
+                        verbInputError.style.visibility = "visible";
+                    };
+                });
+            } // Tvvd is gaming (please don't take my code)
+        </script> 
+
+    </body>
+</html>
