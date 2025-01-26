@@ -189,23 +189,23 @@
                 if (value.substring(value.length - 1, value.length) == "ǝ" || value.substring(value.length - 2, value.length) == "eu" || value.substring(value.length - 2, value.length) == "ëu") { 
                     document.getElementById("singular").textContent = value;
                     document.getElementById("plural").textContent = value + "n";
-                    document.getElementById("gensingular").textContent = value + "je"; 
-                    document.getElementById("genplural").textContent = value + "ne";
+                    document.getElementById("gensingular").textContent = value + "'je"; 
+                    document.getElementById("genplural").textContent = value + "n'e";
                 } else { if (isvowel == true) {
                     document.getElementById("singular").textContent = value;
                     document.getElementById("plural").textContent = value + "s";
-                    document.getElementById("gensingular").textContent = value + "je"; 
-                    document.getElementById("genplural").textContent = value + "se";
+                    document.getElementById("gensingular").textContent = value + "'je"; 
+                    document.getElementById("genplural").textContent = value + "s'e";
                 } else { if (value.substring(value.length - 2, value.length) == "ǝn" || value.substring(value.length - 3, value.length) == "eun" || value.substring(value.length - 3, value.length) == "ëun") {
                     document.getElementById("singular").textContent = value;
                     document.getElementById("plural").textContent = value;
-                    document.getElementById("gensingular").textContent = value + "e"; 
-                    document.getElementById("genplural").textContent = value + "e";
+                    document.getElementById("gensingular").textContent = value + "'e"; 
+                    document.getElementById("genplural").textContent = value + "'e";
                 } else {
                     document.getElementById("singular").textContent = value;
                     document.getElementById("plural").textContent = value + "es";
-                    document.getElementById("gensingular").textContent = value + "e"; 
-                    document.getElementById("genplural").textContent = value + "ese";
+                    document.getElementById("gensingular").textContent = value + "'e"; 
+                    document.getElementById("genplural").textContent = value + "es'e";
                 }}};
                 
                 // show the conjugation UI
