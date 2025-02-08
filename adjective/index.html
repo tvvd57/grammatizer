@@ -51,6 +51,14 @@
                 "y", "ÿ", "ŷ",
                 "u", "ü", "û"
             ];
+            const circumflexes = [
+                "â",
+                "ê",
+                "î",
+                "ô",
+                "ŷ",
+                "û"
+            ]
 
             //on load
             if (currentUrl.includes('?v=')) { // when player already did a verb input
@@ -180,7 +188,7 @@
                 });
 
                 //set the text UIs
-                if (value=="jots"||value=="gre") {
+                if (value=="jots"||value=="gre"||value=="dû") {
                     document.getElementById("neuter").textContent = value;
                     document.getElementById("female").textContent = value;
                     document.getElementById("male").textContent = value;
@@ -215,11 +223,24 @@
                             isvowel = true
                         }
                     });
+                    var iscircumflex = false
+                    circumflexes.forEach(vow => {
+                        if (value.substring(value.length -1, value.length) == vow) {
+                            iscircumflex = true
+                        }
+                    });
                     if (isvowel == true){
-                        document.getElementById("neuter").textContent = value;
-                        document.getElementById("female").textContent = value.substring(0, value.length - 1) + "a";
-                        document.getElementById("male").textContent = value.substring(0, value.length - 1) + "o";
-                        document.getElementById("plural").textContent = value.substring(0, value.length - 1) + "i";
+                        if (iscircumflex == true){
+                            document.getElementById("neuter").textContent = value;
+                            document.getElementById("female").textContent = value.substring(0, value.length - 1) + "â";
+                            document.getElementById("male").textContent = value.substring(0, value.length - 1) + "ô";
+                            document.getElementById("plural").textContent = value.substring(0, value.length - 1) + "î";
+                        } else {
+                            document.getElementById("neuter").textContent = value;
+                            document.getElementById("female").textContent = value.substring(0, value.length - 1) + "a";
+                            document.getElementById("male").textContent = value.substring(0, value.length - 1) + "o";
+                            document.getElementById("plural").textContent = value.substring(0, value.length - 1) + "i";
+                        }
                     } else {
                         document.getElementById("neuter").textContent = value;
                         document.getElementById("female").textContent = value + "a";
