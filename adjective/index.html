@@ -216,6 +216,21 @@
                     document.getElementById("female").textContent = value;
                     document.getElementById("male").textContent = value;
                     document.getElementById("plural").textContent = value;
+                } else { if (value.substring(value.length - 2, value.length)=='eu'){
+                    document.getElementById("neuter").textContent = value;
+                    document.getElementById("female").textContent = value;
+                    document.getElementById("male").textContent = value;
+                    document.getElementById("plural").textContent = value;
+                } else { if (value.substring(value.length - 2, value.length)=='ǝn'){
+                    document.getElementById("neuter").textContent = value;
+                    document.getElementById("female").textContent = value.substring(0, value.length - 2) + "na";
+                    document.getElementById("male").textContent = value.substring(0, value.length - 2) + "no";
+                    document.getElementById("plural").textContent = value.substring(0, value.length - 2) + "ni";
+                } else { if (value.substring(value.length - 3, value.length)=='eun'){
+                    document.getElementById("neuter").textContent = value;
+                    document.getElementById("female").textContent = value.substring(0, value.length - 3) + "na";
+                    document.getElementById("male").textContent = value.substring(0, value.length - 3) + "no";
+                    document.getElementById("plural").textContent = value.substring(0, value.length - 3) + "ni";
                 } else {
                     var isvowel = false
                     vowels.forEach(vow => {
@@ -247,7 +262,7 @@
                         document.getElementById("male").textContent = value + "o";
                         document.getElementById("plural").textContent = value + "i";
                     }
-                }}};
+                }}}}}};
                 
                 // show the conjugation UI
                 verbConjugationUI.style.visibility = "visible";
